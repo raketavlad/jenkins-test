@@ -10,16 +10,6 @@ repositories {
 def junitVersion = "5.8.2"
 def allureVersion = "2.17.2"
 
-dependencies {
-    testImplementation "org.junit.jupiter:junit-jupiter-api:$junitVersion"
-    testRuntimeOnly(
-            "org.slf4j:slf4j-simple:1.7.29",
-            "org.junit.jupiter:junit-jupiter-engine:$junitVersion"
-    )
-
-    testImplementation("io.qameta.allure:allure-selenide:2.17.2")
-}
-
 allure {
     report {
         version.set(allureVersion)
@@ -34,7 +24,21 @@ allure {
     }
 }
 
+dependencies {
+    testImplementation(
+            "com.codeborne:selenide:6.2.1",
+            "io.qameta.allure:allure-selenide:$allureVersion",
+            "org.junit.jupiter:junit-jupiter-api:$junitVersion",
+    )
+    testRuntimeOnly(
+            "org.slf4j:slf4j-simple:1.7.29",
+            "org.junit.jupiter:junit-jupiter-engine:$junitVersion"
+    )
+
+}
+
 tasks.withType(Test) {
+    systemProperties(System.getProperties())
     useJUnitPlatform()
 
     testLogging {
